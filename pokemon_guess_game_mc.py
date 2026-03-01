@@ -18,7 +18,7 @@ def get_valid_cards():
         SELECT c.id, c.name, c.card_number, c.set_name, c.image, p.lowest_near_mint
         FROM cards c
         JOIN prices p ON c.id = p.card_id
-        WHERE c.image IS NOT NULL AND p.lowest_near_mint IS NOT NULL AND p.lowest_near_mint > 0.50
+        WHERE c.image IS NOT NULL AND p.lowest_near_mint IS NOT NULL AND p.lowest_near_mint > 2.50
     """)
     cards = cursor.fetchall()
     conn.close()
@@ -93,3 +93,4 @@ if card:
     st.write(f"Score: {st.session_state.score} / {st.session_state.rounds * 3 if st.session_state.rounds else 1}")
 else:
     st.warning("No valid card found in the database.")
+
