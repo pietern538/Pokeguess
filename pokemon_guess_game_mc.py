@@ -18,7 +18,13 @@ def get_valid_cards():
         SELECT c.id, c.name, c.card_number, c.set_name, c.image, p.lowest_near_mint
         FROM cards c
         JOIN prices p ON c.id = p.card_id
-        WHERE c.image IS NOT NULL AND p.lowest_near_mint IS NOT NULL AND p.lowest_near_mint > 2 AND c.supertype = 'Pokémon'
+        WHERE c.image IS NOT NULL
+          AND p.lowest_near_mint IS NOT NULL
+          AND p.lowest_near_mint > 2
+          AND LOWER(c.name) NOT LIKE '%trainer%'
+          AND LOWER(c.name) NOT LIKE '%energy%'
+          AND LOWER(c.rarity) NOT LIKE '%trainer%'
+          AND LOWER(c.rarity) NOT LIKE '%energy%'
     """)
     cards = cursor.fetchall()
     conn.close()
@@ -98,4 +104,3 @@ if cards:
     st.write(f"Score: {st.session_state.score} / {st.session_state.rounds * 9 if st.session_state.rounds else 1}")
 else:
     st.warning("Not enough valid cards found in the database.")
-
